@@ -32,6 +32,37 @@
       ]
     },
     {
+      "name": "User Management",
+      "routerLink": [""],
+      "identifier": "mmanagement",
+      "iconClass": "icofont-home fs-5",
+      "breadcrumbMessage": "This is user management page",
+      "isCategory": false,
+      "isApp": false,
+      "children": [
+        {
+          "name": "Manage Roles",
+          "routerLink": ["manage-roles"],
+          "identifier": "Manage Roles",
+          "iconClass": "",
+          "breadcrumbMessage": "",
+          "isCategory": false,
+          "isApp": false,
+          "children": []
+        },
+        {
+          "name": "Manage Users",
+          "routerLink": ["manage-users"],
+          "identifier": "Manage Users",
+          "iconClass": "",
+          "breadcrumbMessage": "",
+          "isCategory": false,
+          "isApp": false,
+          "children": []
+        }
+      ]
+    },
+    {
       "name": "Projects",
       "routerLink": [""],
       "identifier": "Projects",
