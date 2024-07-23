@@ -35,7 +35,7 @@
       "name": "User Management",
       "routerLink": [""],
       "identifier": "mmanagement",
-      "iconClass": "icofont-home fs-5",
+      "iconClass": "icofont-user",
       "breadcrumbMessage": "This is user management page",
       "isCategory": false,
       "isApp": false,

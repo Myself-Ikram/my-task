@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PageHeader from "../../components/common/PageHeader";
-import { Form, Modal, Nav } from "react-bootstrap";
-import DataTable from "react-data-table-component";
-import { ManageRolesData } from "../../components/Data/AppData";
+import { Form, Modal } from "react-bootstrap";
 import menuData from "../../components/Data/menu.json";
 import axios from "axios";
 import { SERVER } from "../../config";
@@ -47,6 +45,7 @@ export default function ManageRoles() {
       }
     });
   };
+
   // Add/Update Role
   const handleSubmit = async () => {
     if (modalHeader !== "View") {
@@ -113,7 +112,7 @@ export default function ManageRoles() {
       />
       {/* Body */}
       <div className="d-flex flex-wrap gap-5">
-        {roles.map((item) => (
+        {roles?.map((item) => (
           <div className="bg-white p-3 shadow-lg rounded w-25">
             <p className="m-0">Role Name:</p>
             <p className="fw-bold">{item?.roleName}</p>
