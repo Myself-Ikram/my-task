@@ -4,7 +4,6 @@ import { Form, Modal } from "react-bootstrap";
 import axios from "axios";
 import { SERVER } from "../../config";
 import DataTable from "react-data-table-component";
-import { LeadersListData } from "../../components/Data/AppData";
 const emptyValue = {
   firstName: "",
   lastName: "",
@@ -24,19 +23,25 @@ function ManageUsers() {
 
   // Get Role
   const fetchRoles = async () => {
-    await axios.get(`${SERVER}/roles`).then((res) => {
-      if (res.status === 200) {
-        setRoles(res.data);
-      }
-    });
+    await axios
+      .get(`${SERVER}/roles`, { withCredentials: true })
+      .then((res) => {
+        if (res.status === 200) {
+          setRoles(res.data);
+        }
+      })
+      .catch((err) => console.log(err.message));
   };
   // Get Users
   const fetchUsers = async () => {
-    await axios.get(`${SERVER}/users`).then((res) => {
-      if (res.status === 200) {
-        setUsers(res.data);
-      }
-    });
+    await axios
+      .get(`${SERVER}/users`, { withCredentials: true })
+      .then((res) => {
+        if (res.status === 200) {
+          setUsers(res.data);
+        }
+      })
+      .catch((err) => console.log(err.message));
   };
   useEffect(() => {
     fetchRoles();
@@ -64,7 +69,9 @@ function ManageUsers() {
   const handleSubmit = async () => {
     if (modalHeader === "Edit") {
       await axios
-        .put(`${SERVER}/users/update/${currentItem?._id}`, currentItem)
+        .put(`${SERVER}/users/update/${currentItem?._id}`, currentItem, {
+          withCredentials: true,
+        })
         .then((res) => {
           if (res.status === 201) {
             setIsModal(false);
@@ -74,31 +81,38 @@ function ManageUsers() {
           } else {
             console.log(res.data?.msg);
           }
-        });
+        })
+        .catch((err) => console.log(err.message));
     } else {
-      await axios.post(`${SERVER}/users/add_new`, currentItem).then((res) => {
-        if (res.status === 201) {
-          fetchUsers();
-          setModalHeader("");
-          setIsModal(false);
-          setCurrentItem(emptyValue);
-        } else {
-          console.log("error while adding");
-        }
-      });
+      await axios
+        .post(`${SERVER}/users/add_new`, currentItem, { withCredentials: true })
+        .then((res) => {
+          if (res.status === 201) {
+            fetchUsers();
+            setModalHeader("");
+            setIsModal(false);
+            setCurrentItem(emptyValue);
+          } else {
+            console.log("error while adding");
+          }
+        })
+        .catch((err) => console.log(err.message));
     }
   };
   //   Delete Role
   const deleteRole = async () => {
     await axios
-      .delete(`${SERVER}/users/delete/${currentItem?._id}`)
+      .delete(`${SERVER}/users/delete/${currentItem?._id}`, {
+        withCredentials: true,
+      })
       .then((res) => {
         if (res.status === 200) {
           fetchUsers();
           setIsDeleteModal(false);
           setCurrentItem(emptyValue);
         }
-      });
+      })
+      .catch((err) => console.log(err.message));
   };
   return (
     <div>
@@ -132,7 +146,10 @@ function ManageUsers() {
           },
           { name: "Last Name", cell: (row) => <>{row?.lastName}</> },
           { name: "Email", cell: (row) => <>{row?.email}</> },
-          { name: "Number", cell: (row) => <>{row?.number}</> },
+          {
+            name: "Number",
+            cell: (row) => <>{row?.number ? row?.number : "NA"}</>,
+          },
           {
             name: "Roles",
             cell: (row) => (
@@ -185,7 +202,6 @@ function ManageUsers() {
         selectableRows={false}
         className="table myDataTable table-hover align-middle mb-0 d-row nowrap dataTable no-footer dtr-inline"
         highlightOnHover={true}
-        // onRowClicked={() => { setIsAddUserModal(true) }}
       />
       {/* Modal */}
       <Modal
@@ -272,7 +288,7 @@ function ManageUsers() {
               <div className="mb-3 px-5">
                 <label
                   htmlFor="exampleFormControlInput77"
-                  className="form-label"
+                  className="form-label fw-bold mt-3"
                 >
                   Roles
                 </label>

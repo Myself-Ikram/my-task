@@ -39,29 +39,21 @@ export default function ManageRoles() {
   };
   // Get Role
   const fetchRoles = async () => {
-    await axios.get(`${SERVER}/roles`).then((res) => {
-      if (res.status === 200) {
-        setRoles(res.data);
-      }
-    });
+    await axios
+      .get(`${SERVER}/roles`, { withCredentials: true })
+      .then((res) => {
+        if (res.status === 200) {
+          setRoles(res.data);
+        }
+      })
+      .catch((err) => console.log(err.message));
   };
 
   // Add/Update Role
   const handleSubmit = async () => {
     if (modalHeader !== "View") {
-      await axios.post(`${SERVER}/roles/add_new`, currentItem).then((res) => {
-        if (res.status === 201) {
-          setIsModal(false);
-          setModalHeader("");
-          setCurrentItem();
-          fetchRoles();
-        } else {
-          console.log(res.data?.msg);
-        }
-      });
-    } else {
       await axios
-        .put(`${SERVER}/roles/update/${currentItem?._id}`, currentItem)
+        .post(`${SERVER}/roles/add_new`, currentItem, { withCredentials: true })
         .then((res) => {
           if (res.status === 201) {
             setIsModal(false);
@@ -71,20 +63,40 @@ export default function ManageRoles() {
           } else {
             console.log(res.data?.msg);
           }
-        });
+        })
+        .catch((err) => console.log(err.message));
+    } else {
+      await axios
+        .put(`${SERVER}/roles/update/${currentItem?._id}`, currentItem, {
+          withCredentials: true,
+        })
+        .then((res) => {
+          if (res.status === 201) {
+            setIsModal(false);
+            setModalHeader("");
+            setCurrentItem();
+            fetchRoles();
+          } else {
+            console.log(res.data?.msg);
+          }
+        })
+        .catch((err) => console.log(err.message));
     }
   };
   //   Delete Role
   const deleteRole = async () => {
     await axios
-      .delete(`${SERVER}/roles/delete/${currentItem?._id}`)
+      .delete(`${SERVER}/roles/delete/${currentItem?._id}`, {
+        withCredentials: true,
+      })
       .then((res) => {
         if (res.status === 200) {
           fetchRoles();
           setIsDeleteModal(false);
           setCurrentItem();
         }
-      });
+      })
+      .catch((err) => console.log(err.message));
   };
   return (
     <div>

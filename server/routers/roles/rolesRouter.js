@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Router } from "express";
 import { RoleModel } from "../../models/Role.js";
 
 const rolesRouter = express.Router();
@@ -28,7 +28,16 @@ rolesRouter.get("/", async (req, res) => {
     res.status(501).json({ msg: message.error.message });
   }
 });
-
+// Get a role
+rolesRouter.get("/roleById/:id", async (req, res) => {
+  const id = req.params.id;
+  try {
+    const role = await RoleModel.findById(id);
+    res.status(200).json(role);
+  } catch (error) {
+    res.status(501).json({ msg: message.error.message });
+  }
+});
 //Update Role
 rolesRouter.put("/update/:id", async (req, res) => {
   try {
